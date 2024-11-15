@@ -7,14 +7,18 @@ on:
 
 jobs:
   rubocop:
+    name: Run rubocop
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_ONLY: rubocop
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.2
-      - name: Install dependencies
-        run: bundle install
-      - name: Run Rubocop
-        run: bundle exec rubocop
+          bundler-cache: true
+      - uses: reviewdog/action-rubocop@v2
+        with:
+          reporter: github-pr-review
+          skip_install: true
+          use_bundler: true
