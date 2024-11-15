@@ -6,40 +6,46 @@ on:
       - develop
 
 jobs:
-  test:
+  build:
+    name: rspec
     runs-on: ubuntu-latest
-
     services:
       postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+        image: postgres:16
         ports:
           - 5432:5432
-        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    container:
+      image: ruby:3.2.2
+      env:
+        RAILS_ENV: test
+        POSTGRES_HOST: postgres
+        RAILS_DATABASE_USER: postgres
+        RAILS_DATABASE_PASSWORD: password
 
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips postgresql-client libpq-dev
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: bundler set up
         run: |
-          bin/rails db:setup
-          bin/rails rspec
+          gem install bundler
+          bundle install
+      - name: install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
 
+      - name: db migrate
+        run: |
+          bundle exec rails db:migrate
+
+      - name: verify
+        run: |
+          bundle exec rspec
 
   rubocop:
     name: Run rubocop
