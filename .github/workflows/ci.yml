@@ -62,6 +62,6 @@ jobs:
           bundler-cache: true
       - uses: reviewdog/action-rubocop@v2
         with:
-          reporter: github-pr-review
+          reporter: github-pr-check
           skip_install: true
           use_bundler: true
