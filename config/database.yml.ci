@@ -1,0 +1,8 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: app_test
+  pool: 5
+  username: <%= ENV['RAILS_DATABASE_USER'] || 'postgres' %>
+  password: <%= ENV['RAILS_DATABASE_PASSWORD'] || 'password' %>
+  host: <%= ENV['POSTGRES_HOST'] || 'postgres' %>
