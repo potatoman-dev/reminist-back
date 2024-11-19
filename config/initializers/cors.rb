@@ -7,11 +7,12 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://localhost:4000", "https://reminist.vercel.app"
+    origins '127.0.0.1:4000', "localhost:4000", "https://reminist.vercel.app"
 
     resource "*",
       headers: :any,
       expose: ["access-token", "expiry", "token-type", "uid", "client"],
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true
   end
 end
