@@ -7,5 +7,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :email, presence: true, on: :create
+  validates :password, presence: true, length: { minimum: 8 }, on: :create
+  validates :password_confirmation, presence: true, length: { minimum: 8 }, on: :create
+
   has_many :people, dependent: :destroy
 end
