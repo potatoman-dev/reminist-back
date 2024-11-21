@@ -33,3 +33,5 @@ tmp/storage/*
 config/master.key
 
 /config/credentials/development.key
+
+.http
