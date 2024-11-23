@@ -4,7 +4,7 @@ class Api::V1::PeopleController < ApplicationController
   before_action :authenticate_api_v1_user!
 
   def index
-    people = current_api_v1_user.people.select(:id, :name, :birthday, :gender, :relationship, :encounter_story, :image_url,
+    people = current_api_v1_user.people.select(:id, :name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url,
                                                :created_at).order(created_at: :desc)
     formatted_people_data = formatted_people(people)
     render json: { people: formatted_people_data, status: :ok }
@@ -14,7 +14,7 @@ class Api::V1::PeopleController < ApplicationController
     person = current_api_v1_user.people.new(person_params)
 
     if person.save
-      render json: { person: person, status: :created }
+      render json: { person: formatted_person(person), status: :created }
     else
       render json: { errors: person.errors.full_messages, status: :unprocessable_entity }
     end
@@ -33,6 +33,6 @@ class Api::V1::PeopleController < ApplicationController
   private
 
     def person_params
-      params.require(:person).permit(:name, :birthday, :gender, :relationship, :encounter_story, :image_url)
+      params.require(:person).permit(:name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url)
     end
 end
