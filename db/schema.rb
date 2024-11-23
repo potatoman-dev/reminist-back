@@ -17,7 +17,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_20_091322) do
   create_table "people", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name", null: false
-    t.date "birthday"
+    t.integer "birth_year"
+    t.integer "birth_month"
+    t.integer "birth_day"
     t.string "gender"
     t.string "relationship"
     t.text "encounter_story"
