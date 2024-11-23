@@ -3,7 +3,11 @@ module Api::V1::PeopleHelper
     {
       id: person.id,
       name: person.name,
-      birthday: person.birthday,
+      birthday: {
+        birth_year: person.birth_year,
+        birth_month: person.birth_month,
+        birth_day: person.birth_day,
+      },
       gender: person.gender_i18n,
       relationship: person.relationship_i18n,
       encounter_story: person.encounter_story,

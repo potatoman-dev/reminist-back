@@ -2,7 +2,9 @@ FactoryBot.define do
   factory :person do
     association :user
     name { "ヒトノスケ_1" }
-    birthday { "1990-11-20" }
+    birth_year { 1990 }
+    birth_month { 7 }
+    birth_day { 3 }
     gender { "female" }
     relationship { "friend" }
     encounter_story { "出会いのきっかけは〜〜〜。" }
