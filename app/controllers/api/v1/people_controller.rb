@@ -1,4 +1,5 @@
 class Api::V1::PeopleController < ApplicationController
+  wrap_parameters format: []
   include Api::V1::PeopleHelper
 
   before_action :authenticate_api_v1_user!
