@@ -46,6 +46,16 @@ class Api::V1::PeopleController < ApplicationController
     end
   end
 
+  def destroy
+    person = current_api_v1_user.people.find(params[:id])
+
+    if person.destroy
+      render json: { status: :ok }
+    else
+      render json: { errors: person.errors.full_messages, status: :unprocessable_entity }
+    end
+  end
+
   private
 
     def person_params
