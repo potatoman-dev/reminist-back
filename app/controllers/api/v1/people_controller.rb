@@ -31,6 +31,16 @@ class Api::V1::PeopleController < ApplicationController
     end
   end
 
+  def update
+    person = current_api_v1_user.people.find(params[:id])
+
+    if person.update(person_params)
+      render json: { person: formatted_person(person), status: :ok }
+    else
+      render json: { errors: person.errors.full_messages, status: :unprocessable_entity }
+    end
+  end
+
   private
 
     def person_params
