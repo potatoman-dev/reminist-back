@@ -5,13 +5,13 @@ class Api::V1::PeopleController < ApplicationController
   before_action :authenticate_api_v1_user!
 
   def index
-    case params[:filter]
-    when "upcoming_birthdays"
-      people = current_api_v1_user.people.upcoming_birthdays
-    else
-      people = current_api_v1_user.people.select(:id, :name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url,
-      :created_at).order(created_at: :desc)
-    end
+    people = case params[:filter]
+             when "upcoming_birthdays"
+               current_api_v1_user.people.upcoming_birthdays
+             else
+               current_api_v1_user.people.select(:id, :name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url,
+                                                 :created_at).order(created_at: :desc)
+             end
     formatted_people_data = formatted_people(people)
     render json: { people: formatted_people_data, status: :ok }
   end
