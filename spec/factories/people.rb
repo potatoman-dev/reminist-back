@@ -8,6 +8,6 @@ FactoryBot.define do
     gender { "female" }
     relationship { "friend" }
     encounter_story { "出会いのきっかけは〜〜〜。" }
-    image_url { "foo.png" }
+    image_url { "default" }
   end
 end
