@@ -8,7 +8,9 @@ Rails.application.routes.draw do
             sessions: 'api/v1/auth/sessions'
       }
 
-      resources :people, only: [:index, :create, :show, :update, :destroy]
+      resources :people, only: [:index, :create, :show, :update, :destroy] do
+        resources :conversations, only: [:index, :create, :show, :update, :destroy]
+      end
     end
   end
   # get "up" => "rails/health#show", as: :rails_health_check
