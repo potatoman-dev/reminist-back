@@ -5,7 +5,7 @@ class Api::V1::ConversationsController < ApplicationController
   before_action :set_person
 
   def index
-    conversations = Conversation.all
+    conversations = Conversation.all.order(date: :desc)
     render json: conversations, status: :ok
   end
 
