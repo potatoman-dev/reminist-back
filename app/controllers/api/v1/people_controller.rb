@@ -5,12 +5,12 @@ class Api::V1::PeopleController < ApplicationController
   before_action :authenticate_api_v1_user!
 
   def index
-    people = case params[:filter]
-             when "upcoming_birthdays"
+    people = if params[:filter] == "upcoming_birthdays"
                current_api_v1_user.people.upcoming_birthdays
+             elsif params[:page].present?
+               paginate_people
              else
-               current_api_v1_user.people.select(:id, :name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url,
-                                                 :created_at).order(created_at: :desc)
+               default_people
              end
     formatted_people_data = formatted_people(people)
     render json: { people: formatted_people_data, status: :ok }
@@ -60,5 +60,18 @@ class Api::V1::PeopleController < ApplicationController
 
     def person_params
       params.require(:person).permit(:name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url)
+    end
+
+    def paginate_people
+      page = params[:page].to_i
+      per_page = 4
+      offset = (page - 1) * per_page
+      current_api_v1_user.people.select(:id, :name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url, :created_at).
+        order(created_at: :desc).limit(per_page).offset(offset)
+    end
+
+    def default_people
+      current_api_v1_user.people.select(:id, :name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url, :created_at).
+        order(created_at: :desc).limit(4)
     end
 end
