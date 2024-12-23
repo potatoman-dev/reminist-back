@@ -16,6 +16,17 @@ class Api::V1::PeopleController < ApplicationController
     render json: { people: formatted_people_data, status: :ok }
   end
 
+  def search
+    @q = current_api_v1_user.people.ransack(search_params)
+    people = @q.result(distinct: true)
+
+    if people.any?
+      render json: { params: params[:q], people: people, status: :ok }
+    else
+      render json: { errors: ["条件に一致する結果はありませんでした。"], status: :not_found }
+    end
+  end
+
   def create
     person = current_api_v1_user.people.new(person_params)
 
@@ -60,6 +71,10 @@ class Api::V1::PeopleController < ApplicationController
 
     def person_params
       params.require(:person).permit(:name, :birth_year, :birth_month, :birth_day, :gender, :relationship, :encounter_story, :image_url)
+    end
+
+    def search_params
+      params.require(:q).permit(:name_cont)
     end
 
     def paginate_people
