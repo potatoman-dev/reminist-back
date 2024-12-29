@@ -13,4 +13,9 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true, length: { minimum: 8 }, on: :create
 
   has_many :people, dependent: :destroy
+  has_many :conversations, through: :people
+
+  def self.all_conversations
+    Conversation.joins(:people).distinct
+  end
 end
