@@ -7,7 +7,7 @@ Rails.application.routes.draw do
         registrations: 'api/v1/auth/registrations',
             sessions: 'api/v1/auth/sessions'
       }
-
+      resources :feeds, only: [:index]
       resources :people, only: [:index, :create, :show, :update, :destroy] do
         resources :conversations, only: [:index, :create, :show, :update, :destroy]
         collection do
