@@ -7,6 +7,8 @@ class Api::V1::PeopleController < ApplicationController
   def index
     people = if params[:filter] == "upcoming_birthdays"
                current_api_v1_user.people.upcoming_birthdays
+             elsif params[:filter] == "new_people"
+               current_api_v1_user.people.new_people
              elsif params[:page].present?
                paginate_people
              else
