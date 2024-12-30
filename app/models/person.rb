@@ -12,6 +12,10 @@ class Person < ApplicationRecord
 
   enum relationship: { family: "family", friend: "friend", acquaintance: "acquaintance", coworker: "coworker", other: "other" }, _prefix: true
 
+  def self.new_people
+    order(created_at: :desc).limit(4)
+  end
+
   def self.upcoming_birthdays
     today = Date.today
     one_month_later = today + 1.month
