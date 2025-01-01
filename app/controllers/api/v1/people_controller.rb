@@ -15,7 +15,7 @@ class Api::V1::PeopleController < ApplicationController
                default_people
              end
     formatted_people_data = formatted_people(people)
-    render json: { people: formatted_people_data, status: :ok }
+    render json: { people_count: current_api_v1_user.people.count, people: formatted_people_data, status: :ok }
   end
 
   def search
